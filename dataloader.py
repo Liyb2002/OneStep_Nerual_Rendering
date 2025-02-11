@@ -62,26 +62,32 @@ class cad2sketch_dataset_loader(Dataset):
             # print(f"Skipping {subfolder_path}: Missing files: {', '.join(missing_files)}")
             return None, None, None
 
-        # Load stroke connection matrix
-        strokes_dict_data = self.read_json(strokes_dict_path)
-        intersection_matrix = cad2sketch_stroke_features.build_intersection_matrix(strokes_dict_data)
-
-        # Load and visualize all edges
-        all_edges_data = self.read_json(all_edges_file_path)
-        all_edges_matrix = cad2sketch_stroke_features.simple_build_all_edges_features(all_edges_data)
-        # cad2sketch_stroke_features.vis_all_edges(all_edges_data)
 
         # Load and visualize final edges
         final_edges_data = self.read_json(final_edges_file_path)
-        final_edges_matrix = cad2sketch_stroke_features.simple_build_final_edges_features(final_edges_data, all_edges_data)
-        # cad2sketch_stroke_features.vis_final_edges(final_edges_data)
+        feature_lines = cad2sketch_stroke_features.extract_feature_lines(final_edges_data)
 
-        # Convert to torch tensors if needed
-        intersection_matrix = torch.tensor(intersection_matrix, dtype=torch.float32)
-        all_edges_matrix = torch.tensor(all_edges_matrix, dtype=torch.float32)
-        final_edges_matrix = torch.tensor(final_edges_matrix, dtype=torch.float32)
+        # Type 1) : vertices
+        vertices_matrix = cad2sketch_stroke_features.extract_vertices(feature_lines)
 
-        return intersection_matrix, all_edges_matrix, final_edges_matrix, all_edges_file_path
+        # Type 2) : midpoints
+        midpoints_matrix, matrix_midPoint_relation = cad2sketch_stroke_features.extract_midpoints(feature_lines, vertices_matrix)
+        
+        # Type 3) : permuted_points
+        x_dict, y_dict, z_dict = cad2sketch_stroke_features.extract_xyz_sets(feature_lines)
+        permuted_points = cad2sketch_stroke_features.point_permutations(x_dict, y_dict, z_dict, feature_lines)
+
+        print("vertices_matrix", vertices_matrix.shape)
+        print("midpoints_matrix", midpoints_matrix.shape)
+        print("permuted_points", permuted_points.shape)
+        print("matrix_midPoint_relation", matrix_midPoint_relation.shape)
+        print("-------------")
+
+
+        cad2sketch_stroke_features.vis_permuted_points(vertices_matrix, midpoints_matrix, permuted_points, feature_lines)
+
+
+        return None
 
 
     def __getitem__(self, index):
