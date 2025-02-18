@@ -26,7 +26,7 @@ def train():
 
     # Load data
     for data in tqdm(dataloader, desc="Building Graphs"):
-        intersection_matrix, all_edges_matrix, final_edges_matrix, all_edges_file_path= data
+        pass
 
 # ------------------------------------------------------------------------------# 
 train()

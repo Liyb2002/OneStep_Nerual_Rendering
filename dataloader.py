@@ -3,7 +3,9 @@ import json
 import torch
 from torch.utils.data import Dataset
 import cad2sketch_stroke_features
+import shutil
 
+from pathlib import Path
 
 class cad2sketch_dataset_loader(Dataset):
     def __init__(self):
@@ -12,7 +14,12 @@ class cad2sketch_dataset_loader(Dataset):
         """
         self.data_path = os.path.join(os.getcwd(), 'dataset', 'cad2sketch')
         self.subfolder_paths = []  # Store all subfolder paths
+
+        self.base_input_directory = Path.cwd() / "annotated_input"
+
+
         self.load_dataset()
+
 
     def load_dataset(self):
         """
@@ -41,6 +48,9 @@ class cad2sketch_dataset_loader(Dataset):
                 subfolder_path = os.path.join(folder_path, subfolders[0])
                 self.subfolder_paths.append(subfolder_path)  # Store paths instead of processing
 
+        print("folders", len(folders))
+        print("self.subfolder_paths", len(self.subfolder_paths))
+
 
     def process_subfolder(self, subfolder_path):
         """
@@ -68,12 +78,21 @@ class cad2sketch_dataset_loader(Dataset):
         # Load and visualize only feature lines version
         final_edges_data = self.read_json(final_edges_file_path)
         feature_lines = cad2sketch_stroke_features.extract_feature_lines(final_edges_data)
-        cad2sketch_stroke_features.vis_feature_lines(feature_lines)
+        # cad2sketch_stroke_features.vis_feature_lines(feature_lines)
 
 
         # Load and visualize only final edges (feature + construction lines)
         all_lines = cad2sketch_stroke_features.extract_all_lines(final_edges_data)
-        cad2sketch_stroke_features.vis_feature_lines(all_lines)
+        # cad2sketch_stroke_features.vis_feature_lines(all_lines)
+
+
+        # create new directory
+        last_two_dirs = os.path.join(*subfolder_path.rstrip(os.sep).split(os.sep)[-2:])
+        new_directory = os.path.join(self.base_input_directory, last_two_dirs)
+        os.makedirs(new_directory, exist_ok=True)
+
+        # Prepare the input data
+        cad2sketch_stroke_features.extract_input_json(final_edges_data, new_directory)
 
         return None
 
@@ -86,16 +105,10 @@ class cad2sketch_dataset_loader(Dataset):
         """
         while index < len(self.subfolder_paths):
             subfolder_path = self.subfolder_paths[index]
-            result = self.process_subfolder(subfolder_path)
-            
-            if result is not None and all(item is not None for item in result):
-                return result  # Return valid data
+            self.process_subfolder(subfolder_path)
 
-            # If missing files, move to the next available subfolder
-            # print(f"Skipping index {index} due to missing files. Trying next index.")
             index += 1  
 
-        raise IndexError("No valid subfolders left in the dataset.")
 
     def __len__(self):
         """

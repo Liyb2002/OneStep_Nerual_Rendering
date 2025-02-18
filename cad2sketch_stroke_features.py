@@ -9,7 +9,8 @@ from scipy.interpolate import splprep, splev, CubicSpline
 from itertools import product
 
 
-
+import json
+import os
 
 
 
@@ -57,60 +58,6 @@ def vis_feature_lines(feature_lines):
     plt.show()
 
 
-def vis_permuted_points(vertices_matrix, midpoints_matrix, permuted_points, feature_lines):
-    """
-    Visualizes four kinds of 3D points in different colors along with feature-line strokes.
-    Background and axes are removed for a clean visualization.
-
-    Parameters:
-    - vertices_matrix (numpy.ndarray): (n, 3) Original feature-line points.
-    - midpoints_matrix (numpy.ndarray): (m, 3) Midpoints of strokes.
-    - permuted_points (numpy.ndarray): (p, 3) Generated points from point_permutations.
-    - feature_lines (list): List of stroke dictionaries containing geometry (list of 3D points).
-    """
-    # Initialize 3D plot
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    
-    # Remove background and axis
-    ax.set_frame_on(False)
-    ax.set_xticks([])
-    ax.set_yticks([])
-    ax.set_zticks([])
-    ax.grid(False)
-    ax.set_xticklabels([])
-    ax.set_yticklabels([])
-    ax.set_zticklabels([])
-
-    # Plot original feature-line points in black
-    if vertices_matrix.shape[0] > 0:
-        ax.scatter(vertices_matrix[:, 0], vertices_matrix[:, 1], vertices_matrix[:, 2], 
-                   color='black', s=10, label="Feature-line Points")
-
-    # Plot midpoints in red
-    if midpoints_matrix.shape[0] > 0:
-        ax.scatter(midpoints_matrix[:, 0], midpoints_matrix[:, 1], midpoints_matrix[:, 2], 
-                   color='red', s=10, label="Midpoints")
-
-    # Plot permuted points in blue
-    if permuted_points.shape[0] > 0:
-        ax.scatter(permuted_points[:, 0], permuted_points[:, 1], permuted_points[:, 2], 
-                   color='blue', s=5, label="Permuted Points")
-
-    # Plot feature lines as green lines
-    for stroke in feature_lines:
-        geometry = stroke["geometry"]
-        if len(geometry) >= 2:
-            x_values = [point[0] for point in geometry]
-            y_values = [point[1] for point in geometry]
-            z_values = [point[2] for point in geometry]
-            ax.plot(x_values, y_values, z_values, color='green', linewidth=1, label="Feature Lines" if "Feature Lines" not in ax.get_legend_handles_labels()[1] else "")
-
-
-    # Show plot
-    plt.show()
-
-
 # ------------------------------------------------------------------------------------# 
 
 
@@ -154,3 +101,75 @@ def extract_all_lines(final_edges_data):
 
     return feature_lines
 
+
+# ------------------------------------------------------------------------------------# 
+def extract_input_json(final_edges_data, subfolder_path):
+    """
+    Extracts stroke data from final_edges_data and saves it as 'input.json' in the specified subfolder.
+
+    Parameters:
+    - final_edges_data: Dictionary containing stroke information.
+    - subfolder_path: Path where the JSON file should be saved.
+    """
+    strokes = []
+    stroke_id_mapping = {}  # Maps stroke keys to index IDs
+    current_id = 0
+
+    for key, stroke in final_edges_data.items():
+        stroke_type = stroke["type"]
+
+        # Only consider feature, extrude, and fillet lines
+        if stroke_type in ["feature_line", "extrude_line", "fillet_line"]:
+            geometry = stroke["geometry"]
+
+            if len(geometry) == 2:
+                # Straight line: (x1, y1, z1, x2, y2, z2)
+                stroke_data = {
+                    "id": current_id,
+                    "type": "line",
+                    "coords": [*geometry[0], *geometry[1]]  # Flatten start & end points
+                }
+            else:
+                # Curve line: (x1, y1, z1, x2, y2, z2, cx, cy, cz)
+                start = geometry[0]
+                end = geometry[-1]
+                control = geometry[1]  # Assuming single control point for now
+
+                stroke_data = {
+                    "id": current_id,
+                    "type": "curve",
+                    "coords": [*start, *end, *control]
+                }
+
+            strokes.append(stroke_data)
+            stroke_id_mapping[key] = current_id
+            current_id += 1
+
+    # Extract intersections based on geometry proximity (to be implemented)
+    intersections = extract_intersections(strokes)
+
+    dataset_entry = {
+        "strokes": strokes,
+        "intersections": intersections,
+        "construction_lines": []  # Placeholder until we define a method
+    }
+
+    # Ensure the folder exists before saving
+    if not os.path.exists(subfolder_path):
+        os.makedirs(subfolder_path)
+        
+    json_path = os.path.join(subfolder_path, "input.json")
+
+    # Save to file
+    with open(json_path, "w") as f:
+        json.dump(dataset_entry, f, indent=4)
+
+    print(f"JSON dataset saved successfully at: {json_path}")
+
+# Function to extract intersections (to be implemented)
+def extract_intersections(strokes):
+    """
+    Placeholder function to determine intersections based on stroke coordinates.
+    Returns a list of index pairs.
+    """
+    return []  # Implement intersection logic later
