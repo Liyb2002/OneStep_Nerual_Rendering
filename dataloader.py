@@ -36,9 +36,11 @@ class cad2sketch_dataset_loader(Dataset):
                 print(f"No subfolders found in '{folder}'. Skipping...")
                 continue
 
+
             for subfolder in subfolders:
                 subfolder_path = os.path.join(folder_path, subfolders[0])
                 self.subfolder_paths.append(subfolder_path)  # Store paths instead of processing
+
 
     def process_subfolder(self, subfolder_path):
         """
@@ -63,29 +65,15 @@ class cad2sketch_dataset_loader(Dataset):
             return None, None, None
 
 
-        # Load and visualize final edges
+        # Load and visualize only feature lines version
         final_edges_data = self.read_json(final_edges_file_path)
         feature_lines = cad2sketch_stroke_features.extract_feature_lines(final_edges_data)
-
-        # Type 1) : vertices
-        vertices_matrix = cad2sketch_stroke_features.extract_vertices(feature_lines)
-
-        # Type 2) : midpoints
-        midpoints_matrix, matrix_midPoint_relation = cad2sketch_stroke_features.extract_midpoints(feature_lines, vertices_matrix)
-        
-        # Type 3) : permuted_points
-        x_dict, y_dict, z_dict = cad2sketch_stroke_features.extract_xyz_sets(feature_lines)
-        permuted_points = cad2sketch_stroke_features.point_permutations(x_dict, y_dict, z_dict, feature_lines)
-
-        print("vertices_matrix", vertices_matrix.shape)
-        print("midpoints_matrix", midpoints_matrix.shape)
-        print("permuted_points", permuted_points.shape)
-        print("matrix_midPoint_relation", matrix_midPoint_relation.shape)
-        print("-------------")
+        cad2sketch_stroke_features.vis_feature_lines(feature_lines)
 
 
-        cad2sketch_stroke_features.vis_permuted_points(vertices_matrix, midpoints_matrix, permuted_points, feature_lines)
-
+        # Load and visualize only final edges (feature + construction lines)
+        all_lines = cad2sketch_stroke_features.extract_all_lines(final_edges_data)
+        cad2sketch_stroke_features.vis_feature_lines(all_lines)
 
         return None
 
