@@ -102,6 +102,27 @@ def extract_all_lines(final_edges_data):
     return feature_lines
 
 
+def extract_only_construction_lines(final_edges_data):
+    """
+    Extracts strokes from final_edges_data where type is 'feature_line'.
+
+    Parameters:
+    - final_edges_data (dict): A dictionary where keys are stroke IDs and values contain stroke properties.
+
+    Returns:
+    - list: A list of strokes that are labeled as 'feature_line'.
+    """
+    feature_lines = []
+
+    for key, stroke in final_edges_data.items():
+        stroke_type = stroke['type']
+
+        if stroke_type != 'feature_line' and stroke_type != 'extrude_line' and stroke_type != 'fillet_line':
+            feature_lines.append(stroke)
+
+    return feature_lines
+
+
 # ------------------------------------------------------------------------------------# 
 def extract_input_json(final_edges_data, strokes_dict_data, subfolder_path):
     """
@@ -164,7 +185,8 @@ def extract_input_json(final_edges_data, strokes_dict_data, subfolder_path):
     with open(json_path, "w") as f:
         json.dump(dataset_entry, f, indent=4)
 
-# Function to extract intersections (to be implemented)
+
+
 def extract_intersections(strokes_dict_data):
     intersections = []
 

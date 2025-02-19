@@ -51,7 +51,6 @@ class cad2sketch_dataset_loader(Dataset):
 
         for subfolder_path in tqdm(self.subfolder_paths, desc=f"Cleaning Data",):
             self.process_subfolder( subfolder_path)
-            break
 
 
     def process_subfolder(self, subfolder_path):
@@ -88,14 +87,19 @@ class cad2sketch_dataset_loader(Dataset):
         # cad2sketch_stroke_features.vis_feature_lines(all_lines)
 
 
+        # Load and visualize only construction lines (construction lines)
+        # construction_lines = cad2sketch_stroke_features.extract_only_construction_lines(final_edges_data)
+        # cad2sketch_stroke_features.vis_feature_lines(construction_lines)
+
+
         # create new directory
         last_two_dirs = os.path.join(*subfolder_path.rstrip(os.sep).split(os.sep)[-2:])
         new_directory = os.path.join(self.base_input_directory, last_two_dirs)
         os.makedirs(new_directory, exist_ok=True)
 
         # Prepare the input data
-        strokes_dict_data = self.read_json(strokes_dict_path)
-        cad2sketch_stroke_features.extract_input_json(final_edges_data, strokes_dict_data, new_directory)
+        # strokes_dict_data = self.read_json(strokes_dict_path)
+        # cad2sketch_stroke_features.extract_input_json(final_edges_data, strokes_dict_data, new_directory)
 
         return None
 
