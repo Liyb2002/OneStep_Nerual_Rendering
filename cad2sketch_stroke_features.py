@@ -164,8 +164,6 @@ def extract_input_json(final_edges_data, subfolder_path):
     with open(json_path, "w") as f:
         json.dump(dataset_entry, f, indent=4)
 
-    print(f"JSON dataset saved successfully at: {json_path}")
-
 # Function to extract intersections (to be implemented)
 def extract_intersections(strokes):
     """

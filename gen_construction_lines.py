@@ -24,9 +24,6 @@ def train():
     graphs = []
     final_edges_mask = []
 
-    # Load data
-    for data in tqdm(dataloader, desc="Building Graphs"):
-        pass
 
 # ------------------------------------------------------------------------------# 
 train()

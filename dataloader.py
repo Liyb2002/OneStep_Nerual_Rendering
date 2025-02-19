@@ -5,6 +5,7 @@ from torch.utils.data import Dataset
 import cad2sketch_stroke_features
 import shutil
 
+from tqdm import tqdm
 from pathlib import Path
 
 class cad2sketch_dataset_loader(Dataset):
@@ -48,8 +49,8 @@ class cad2sketch_dataset_loader(Dataset):
                 subfolder_path = os.path.join(folder_path, subfolders[0])
                 self.subfolder_paths.append(subfolder_path)  # Store paths instead of processing
 
-        print("folders", len(folders))
-        print("self.subfolder_paths", len(self.subfolder_paths))
+        for subfolder_path in tqdm(self.subfolder_paths, desc=f"Cleaning Data",):
+            self.process_subfolder( subfolder_path)
 
 
     def process_subfolder(self, subfolder_path):
@@ -103,12 +104,7 @@ class cad2sketch_dataset_loader(Dataset):
         If a subfolder has missing files, find the next available subfolder.
         Returns a tuple (intersection_matrix, all_edges_matrix, final_edges_matrix).
         """
-        while index < len(self.subfolder_paths):
-            subfolder_path = self.subfolder_paths[index]
-            self.process_subfolder(subfolder_path)
-
-            index += 1  
-
+        pass
 
     def __len__(self):
         """
