@@ -103,7 +103,7 @@ def extract_all_lines(final_edges_data):
 
 
 # ------------------------------------------------------------------------------------# 
-def extract_input_json(final_edges_data, subfolder_path):
+def extract_input_json(final_edges_data, strokes_dict_data, subfolder_path):
     """
     Extracts stroke data from final_edges_data and saves it as 'input.json' in the specified subfolder.
 
@@ -146,7 +146,7 @@ def extract_input_json(final_edges_data, subfolder_path):
             current_id += 1
 
     # Extract intersections based on geometry proximity (to be implemented)
-    intersections = extract_intersections(strokes)
+    intersections = extract_intersections(strokes_dict_data)
 
     dataset_entry = {
         "strokes": strokes,
@@ -165,9 +165,20 @@ def extract_input_json(final_edges_data, subfolder_path):
         json.dump(dataset_entry, f, indent=4)
 
 # Function to extract intersections (to be implemented)
-def extract_intersections(strokes):
-    """
-    Placeholder function to determine intersections based on stroke coordinates.
-    Returns a list of index pairs.
-    """
-    return []  # Implement intersection logic later
+def extract_intersections(strokes_dict_data):
+    intersections = []
+
+    for idx, stroke_dict in enumerate(strokes_dict_data):
+        intersect_strokes = stroke_dict["intersections"]
+
+        # Unfold the sublists to get all intersecting stroke indices
+        intersecting_indices = {stroke_idx for sublist in intersect_strokes for stroke_idx in sublist}
+
+        # Add intersections as pairs (ensuring stroke_1 < stroke_2 for consistency)
+        for intersecting_idx in intersecting_indices:
+            if 0 <= intersecting_idx < len(strokes_dict_data):  # Ensure index is valid
+                intersection_pair = tuple(sorted([idx, intersecting_idx]))  # Ensure order consistency
+                if intersection_pair not in intersections:
+                    intersections.append(intersection_pair)
+
+    return intersections

@@ -1,3 +1,5 @@
 /checkpoints
 /annotated_input
+
+*.json
 /dataset
