@@ -78,7 +78,7 @@ class cad2sketch_dataset_loader(Dataset):
 
         # Load and visualize only feature lines version
         final_edges_data = self.read_json(final_edges_file_path)
-        # feature_lines = cad2sketch_stroke_features.extract_feature_lines(final_edges_data)
+        feature_lines = cad2sketch_stroke_features.extract_feature_lines(final_edges_data)
         # cad2sketch_stroke_features.vis_feature_lines(feature_lines)
 
 
@@ -88,7 +88,7 @@ class cad2sketch_dataset_loader(Dataset):
 
 
         # Load and visualize only construction lines (construction lines)
-        # construction_lines = cad2sketch_stroke_features.extract_only_construction_lines(final_edges_data)
+        construction_lines = cad2sketch_stroke_features.extract_only_construction_lines(final_edges_data)
         # cad2sketch_stroke_features.vis_feature_lines(construction_lines)
 
 
@@ -98,8 +98,12 @@ class cad2sketch_dataset_loader(Dataset):
         os.makedirs(new_directory, exist_ok=True)
 
         # Prepare the input data
-        # strokes_dict_data = self.read_json(strokes_dict_path)
-        # cad2sketch_stroke_features.extract_input_json(final_edges_data, strokes_dict_data, new_directory)
+        strokes_dict_data = self.read_json(strokes_dict_path)
+        cad2sketch_stroke_features.extract_input_json(final_edges_data, strokes_dict_data, new_directory)
+        
+        
+        # Prepare the ground truth outputs data
+        cad2sketch_stroke_features.assign_point_meanings(construction_lines, feature_lines, new_directory)
 
         return None
 

@@ -204,3 +204,95 @@ def extract_intersections(strokes_dict_data):
                     intersections.append(intersection_pair)
 
     return intersections
+
+
+
+
+# ------------------------------------------------------------------------------------# 
+def compute_midpoint(stroke):
+    """Compute the midpoint of a feature stroke."""
+    start, end = stroke['geometry'][0], stroke['geometry'][-1]
+    return [(start[0] + end[0]) / 2, (start[1] + end[1]) / 2, (start[2] + end[2]) / 2]
+
+def is_close(p1, p2, tol=1e-3):
+    """Check if two points are approximately the same within a given tolerance."""
+    return all(abs(a - b) < tol for a, b in zip(p1, p2))
+
+def point_meaning(point, feature_lines):
+    """
+    Determine the meaning of a given point relative to feature strokes.
+
+    Parameters:
+    - point: A 3D point [x, y, z]
+    - feature_lines: A list of feature strokes as dictionaries {id, geometry}
+
+    Returns:
+    - A tuple (relation, feature_line_id) or ("unknown", -1) if no relation found.
+    """
+    for stroke in feature_lines:
+        stroke_id = stroke['id']
+        start, end = stroke['geometry'][0], stroke['geometry'][-1]
+        midpoint = compute_midpoint(stroke)
+
+        if is_close(point, start):
+            return ("endpoint", stroke_id)
+        elif is_close(point, end):
+            return ("endpoint", stroke_id)
+        elif is_close(point, midpoint):
+            return ("midpoint", stroke_id)
+
+    # Check if the point lies on an extension of any feature stroke
+    for stroke in feature_lines:
+        stroke_id = stroke['id']
+        start, end = stroke['geometry'][0], stroke['geometry'][-1]
+        stroke_vec = [end[i] - start[i] for i in range(3)]
+        point_vec = [point[i] - start[i] for i in range(3)]
+
+        # Check collinearity using cross product
+        cross_product = [
+            stroke_vec[1] * point_vec[2] - stroke_vec[2] * point_vec[1],
+            stroke_vec[2] * point_vec[0] - stroke_vec[0] * point_vec[2],
+            stroke_vec[0] * point_vec[1] - stroke_vec[1] * point_vec[0]
+        ]
+
+        if all(abs(c) < 1e-3 for c in cross_product):  # Collinear check
+            dot_product = sum(stroke_vec[i] * point_vec[i] for i in range(3))
+            stroke_length = sum(stroke_vec[i] ** 2 for i in range(3)) ** 0.5
+            point_length = sum(point_vec[i] ** 2 for i in range(3)) ** 0.5
+
+            if dot_product > 0 and point_length > stroke_length:
+                return ("on_extension", stroke_id)
+
+    return ("unknown", -1)
+
+def assign_point_meanings(construction_lines, feature_lines, subfolder_path):
+    """
+    Assign meanings to the two endpoints of each construction line and save them as gt_output.json.
+
+    Parameters:
+    - construction_lines: List of construction lines as dictionaries {id, geometry}
+    - feature_lines: List of feature strokes as dictionaries {id, geometry}
+    - subfolder_path: Path where the JSON file should be saved.
+
+    Returns:
+    - Saves the output JSON file containing labels.
+    """
+    labeled_data = []
+
+    for construction in construction_lines:
+        point1, point2 = construction['geometry'][0], construction['geometry'][-1]
+
+        meaning1 = point_meaning(point1, feature_lines)
+        meaning2 = point_meaning(point2, feature_lines)
+
+        labeled_data.append([meaning1, meaning2])
+
+    # Ensure the folder exists before saving
+    if not os.path.exists(subfolder_path):
+        os.makedirs(subfolder_path)
+
+    json_path = os.path.join(subfolder_path, "gt_output.json")
+
+    # Save to file
+    with open(json_path, "w") as f:
+        json.dump(labeled_data, f, indent=4)
