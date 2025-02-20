@@ -48,6 +48,9 @@ class cad2sketch_dataset_loader(Dataset):
             for subfolder in subfolders:
                 subfolder_path = os.path.join(folder_path, subfolders[0])
                 self.subfolder_paths.append(subfolder_path)  # Store paths instead of processing
+            
+            if len(folders) > 10:
+                break
 
         for subfolder_path in tqdm(self.subfolder_paths, desc=f"Cleaning Data",):
             self.process_subfolder( subfolder_path)
