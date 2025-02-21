@@ -1,0 +1,43 @@
+🦥 Unsloth: Will patch your computer to enable 2x faster free finetuning.
+🦥 Unsloth Zoo will now patch everything to make training faster!
+==((====))==  Unsloth 2025.2.15: Fast Qwen2 patching. Transformers: 4.49.0.
+   \\   /|    GPU: NVIDIA GeForce RTX 4090. Max memory: 23.61 GB. Platform: Linux.
+O^O/ \_/ \    Torch: 2.6.0+cu124. CUDA: 8.9. CUDA Toolkit: 12.4. Triton: 3.2.0
+\        /    Bfloat16 = TRUE. FA [Xformers = 0.0.29.post3. FA2 = False]
+ "-____-"     Free Apache license: http://github.com/unslothai/unsloth
+Unsloth: Fast downloading is enabled - ignore downloading bars which are red colored!
+Loading checkpoint shards: 100%|█████████████████████████████| 3/3 [00:01<00:00,  1.68it/s]
+
+<think>
+Okay, so I need to figure out what construction lines should be added to the given sketch data. Let me start by understanding the problem.
+
+The input provides a stroke cloud with two strokes. The first stroke is a feature line from (0,0,0) to (1,0,0), which is a horizontal line along the x-axis. The second stroke goes from (1,0,0) to (1,1,0), which is a vertical line upwards from the end of the first line. So, together, these two lines form the corner of a rectangle or maybe the start of a right angle.
+
+Looking at the intersections, there's an intersection at (1,2). Wait, that's a bit confusing because the strokes only go up to (1,1,0). Maybe it's a typo, or perhaps the intersection is at (1,1,0). Alternatively, maybe it's in 3D space, but since all the coordinates are z=0, it's probably a 2D problem.
+
+The task is to determine appropriate construction lines. Construction lines are usually guidelines that help in drawing or constructing more complex shapes. They can include things like perpendicular lines, parallel lines, bisectors, or midlines.
+
+Given the two strokes, which form a right angle at (1,0,0), the next logical step would be to create lines that extend this structure. One common construction line would be the continuation of the horizontal line beyond (0,0,0), which would be a line going from (0,0,0) to (-1,0,0). This would help in creating symmetry or extending the base.
+
+Another useful line would be the continuation of the vertical line upwards from (1,1,0) to (1,2,0). This would allow for extending the vertical side, which could be useful if the user is trying to draw a rectangle or a square.
+
+Additionally, it's often helpful to draw the diagonals of the rectangle formed by these lines. The diagonal from (0,0,0) to (1,1,0) would be a 45-degree line, which can help in ensuring that the opposite corners are correctly aligned.
+
+I should also consider if there are any other lines that would aid in constructing the figure. For example, a midline between the two existing strokes could be useful, but given that the strokes form a corner, extending them seems more immediately helpful.
+
+So, putting it all together, the construction lines to add would be:
+
+1. The continuation of the horizontal line to the left.
+2. The continuation of the vertical line upwards.
+3. The diagonal line connecting the two endpoints.
+
+These lines would provide a clear framework for constructing a rectangle or square, which is a common use case for such strokes.
+</think>
+
+The appropriate construction lines to add are:
+
+1. **Continuation of the horizontal line to the left**: This line extends from (0,0,0) to (-1,0,0), aiding in symmetry or extension of the base.
+2. **Continuation of the vertical line upwards**: This line extends from (1,1,0) to (1,2,0), allowing for extending the vertical side.
+3. **Diagonal line**: This line connects (0,0,0) to (1,1,0), providing a 45-degree reference for alignment.
+
+These lines collectively form a framework for constructing a rectangle or square, enhancing the sketch's structure and aiding in accurate shape creation.

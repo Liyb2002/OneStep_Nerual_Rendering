@@ -1,0 +1,45 @@
+🦥 Unsloth: Will patch your computer to enable 2x faster free finetuning.
+🦥 Unsloth Zoo will now patch everything to make training faster!
+==((====))==  Unsloth 2025.2.15: Fast Qwen2 patching. Transformers: 4.49.0.
+   \\   /|    GPU: NVIDIA GeForce RTX 4090. Max memory: 23.61 GB. Platform: Linux.
+O^O/ \_/ \    Torch: 2.6.0+cu124. CUDA: 8.9. CUDA Toolkit: 12.4. Triton: 3.2.0
+\        /    Bfloat16 = TRUE. FA [Xformers = 0.0.29.post3. FA2 = False]
+ "-____-"     Free Apache license: http://github.com/unslothai/unsloth
+Unsloth: Fast downloading is enabled - ignore downloading bars which are red colored!
+Loading checkpoint shards: 100%|█████████████████████████████| 3/3 [00:01<00:00,  1.67it/s]
+
+<think>
+Okay, so I need to figure out what legal principles apply when a contract is signed under duress. Hmm, I remember from my studies that duress can affect the validity of a contract, but I'm not exactly sure about the specifics. Let me break this down step by step.
+
+First, I think duress means that one party was forced to sign the contract against their will. But how does the law view this? I recall something about contracts needing to be entered into freely. So, if someone is forced, the contract might be voidable. But I'm not certain about the exact terms.
+
+I think the main concept here is "voluntary agreement." For a contract to be valid, both parties should agree to it without any coercion. If one party was under duress, that agreement might not be considered voluntary. So, the principle of freedom of contract comes into play, which emphasizes that agreements must be voluntary and without duress.
+
+Then, there's the concept of duress itself. Duress can be physical or psychological. For example, if someone threatens to harm another person unless they sign, that's duress. The law would likely find the contract unenforceable because the agreement wasn't truly voluntary.
+
+I also remember something about the role of the court. If a party feels they were under duress, they can go to court, and the court can determine if the contract is voidable. The court might look at the circumstances surrounding the signing of the contract to decide if duress was present.
+
+Another point is the difference between duress and undue influence. Undue influence is a bit different, where one party takes advantage of a position of power, but the line between the two can be blurry. However, both can render a contract voidable if the influence was excessive.
+
+I should also consider whether the duress was present at the time of signing. If it's proven that one party was forced, the contract could be set aside. But if the duress was not significant or if the party voluntarily accepted the terms despite some pressure, the contract might still hold.
+
+Additionally, in some jurisdictions, specific statutes might cover duress in contracts. So, the applicable law in the jurisdiction where the contract was made is important. Common law and statutory laws can vary, so it's crucial to check the specific legal framework.
+
+In summary, the key principles are the necessity of a voluntary agreement without duress, the court's role in assessing the situation, and the application of relevant laws. These factors determine whether the contract is valid or can be voided.
+</think>
+
+When assessing the validity of a contract signed under duress, the following legal principles apply:
+
+1. **Voluntary Agreement**: Contracts must be entered into voluntarily. If one party was forced, the agreement may be considered involuntary.
+
+2. **Freedom of Contract**: This principle emphasizes that agreements must be voluntary and without duress to be valid.
+
+3. **Duress**: Defined as force or pressure, whether physical or psychological, which negates the voluntariness of the agreement. Contracts under duress are often voidable.
+
+4. **Court's Role**: The court can determine if duress existed by examining the circumstances surrounding the contract's execution.
+
+5. **Undue Influence**: Similar to duress, this involves taking advantage of a power imbalance, which can render a contract voidable.
+
+6. **Jurisdictional Law**: The applicable common law or statutory laws of the jurisdiction where the contract was made are crucial, as they can vary in their treatment of duress.
+
+In conclusion, the presence of duress can render a contract voidable if proven, as the agreement was not voluntary. The court will assess the situation, and the applicable law will determine the contract's validity.<｜end▁of▁sentence｜>

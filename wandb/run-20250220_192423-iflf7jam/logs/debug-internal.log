@@ -1,0 +1,15 @@
+{"time":"2025-02-20T19:24:23.210562654-05:00","level":"INFO","msg":"stream: starting","core version":"0.19.6","symlink path":"/home/yli581/Documents/CAD2Sketch/OneStep_Nerual_Rendering/wandb/run-20250220_192423-iflf7jam/logs/debug-core.log"}
+{"time":"2025-02-20T19:24:23.313156483-05:00","level":"INFO","msg":"created new stream","id":"iflf7jam"}
+{"time":"2025-02-20T19:24:23.313177418-05:00","level":"INFO","msg":"stream: started","id":"iflf7jam"}
+{"time":"2025-02-20T19:24:23.313189414-05:00","level":"INFO","msg":"writer: Do: started","stream_id":"iflf7jam"}
+{"time":"2025-02-20T19:24:23.313204522-05:00","level":"INFO","msg":"sender: started","stream_id":"iflf7jam"}
+{"time":"2025-02-20T19:24:23.313220806-05:00","level":"INFO","msg":"handler: started","stream_id":"iflf7jam"}
+{"time":"2025-02-20T19:24:23.454355681-05:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-02-20T19:30:12.513251725-05:00","level":"INFO","msg":"stream: closing","id":"iflf7jam"}
+{"time":"2025-02-20T19:30:12.513267306-05:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-02-20T19:30:12.51358901-05:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-02-20T19:30:12.993521177-05:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-02-20T19:30:13.097283358-05:00","level":"INFO","msg":"handler: closed","stream_id":"iflf7jam"}
+{"time":"2025-02-20T19:30:13.097313987-05:00","level":"INFO","msg":"writer: Close: closed","stream_id":"iflf7jam"}
+{"time":"2025-02-20T19:30:13.097326174-05:00","level":"INFO","msg":"sender: closed","stream_id":"iflf7jam"}
+{"time":"2025-02-20T19:30:13.097383398-05:00","level":"INFO","msg":"stream: closed","id":"iflf7jam"}

@@ -1,0 +1,18 @@
+🦥 Unsloth: Will patch your computer to enable 2x faster free finetuning.
+🦥 Unsloth Zoo will now patch everything to make training faster!
+==((====))==  Unsloth 2025.2.15: Fast Qwen2 patching. Transformers: 4.49.0.
+   \\   /|    GPU: NVIDIA GeForce RTX 4090. Max memory: 23.61 GB. Platform: Linux.
+O^O/ \_/ \    Torch: 2.6.0+cu124. CUDA: 8.9. CUDA Toolkit: 12.4. Triton: 3.2.0
+\        /    Bfloat16 = TRUE. FA [Xformers = 0.0.29.post3. FA2 = False]
+ "-____-"     Free Apache license: http://github.com/unslothai/unsloth
+Unsloth: Fast downloading is enabled - ignore downloading bars which are red colored!
+model.safetensors.index.json: 100%|█████████████████████| 182k/182k [00:00<00:00, 9.65MB/s]
+model-00001-of-00003.safetensors: 100%|███████████████| 4.94G/4.94G [01:57<00:00, 42.1MB/s]
+model-00002-of-00003.safetensors: 100%|███████████████| 4.97G/4.97G [01:58<00:00, 42.1MB/s]
+model-00003-of-00003.safetensors: 100%|███████████████| 4.35G/4.35G [01:43<00:00, 42.0MB/s]
+Downloading shards: 100%|███████████████████████████████████| 3/3 [05:40<00:00, 113.37s/it]
+Loading checkpoint shards: 100%|█████████████████████████████| 3/3 [00:01<00:00,  1.62it/s]
+generation_config.json: 100%|█████████████████████████████| 236/236 [00:00<00:00, 1.88MB/s]
+tokenizer_config.json: 100%|██████████████████████████| 6.78k/6.78k [00:00<00:00, 33.2MB/s]
+tokenizer.json: 100%|█████████████████████████████████| 11.4M/11.4M [00:00<00:00, 43.9MB/s]
+special_tokens_map.json: 100%|████████████████████████████| 472/472 [00:00<00:00, 3.59MB/s]

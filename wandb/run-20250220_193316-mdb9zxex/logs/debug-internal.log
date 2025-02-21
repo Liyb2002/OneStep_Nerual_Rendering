@@ -1,0 +1,15 @@
+{"time":"2025-02-20T19:33:17.146241976-05:00","level":"INFO","msg":"stream: starting","core version":"0.19.6","symlink path":"/home/yli581/Documents/CAD2Sketch/OneStep_Nerual_Rendering/wandb/run-20250220_193316-mdb9zxex/logs/debug-core.log"}
+{"time":"2025-02-20T19:33:17.249669635-05:00","level":"INFO","msg":"created new stream","id":"mdb9zxex"}
+{"time":"2025-02-20T19:33:17.249683937-05:00","level":"INFO","msg":"stream: started","id":"mdb9zxex"}
+{"time":"2025-02-20T19:33:17.249743251-05:00","level":"INFO","msg":"writer: Do: started","stream_id":"mdb9zxex"}
+{"time":"2025-02-20T19:33:17.249799615-05:00","level":"INFO","msg":"handler: started","stream_id":"mdb9zxex"}
+{"time":"2025-02-20T19:33:17.249829103-05:00","level":"INFO","msg":"sender: started","stream_id":"mdb9zxex"}
+{"time":"2025-02-20T19:33:17.419109142-05:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-02-20T19:33:42.906278301-05:00","level":"INFO","msg":"stream: closing","id":"mdb9zxex"}
+{"time":"2025-02-20T19:33:42.906292022-05:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-02-20T19:33:42.906615726-05:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-02-20T19:33:43.283604363-05:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-02-20T19:33:43.399096319-05:00","level":"INFO","msg":"handler: closed","stream_id":"mdb9zxex"}
+{"time":"2025-02-20T19:33:43.399115444-05:00","level":"INFO","msg":"writer: Close: closed","stream_id":"mdb9zxex"}
+{"time":"2025-02-20T19:33:43.399156401-05:00","level":"INFO","msg":"sender: closed","stream_id":"mdb9zxex"}
+{"time":"2025-02-20T19:33:43.399178692-05:00","level":"INFO","msg":"stream: closed","id":"mdb9zxex"}
