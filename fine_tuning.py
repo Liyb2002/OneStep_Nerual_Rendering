@@ -44,19 +44,41 @@ model, tokenizer = FastLanguageModel.from_pretrained(
 
 # ====== 🔹 Define Prompt Style for Fine-Tuning ====== #
 prompt_style = """Below is an instruction that describes a task, paired with an input that provides further context. 
-Write a response that appropriately completes the request. 
-Before answering, think carefully about the input sketch data and analyze the spatial relationships step by step.
+Write a response that appropriately completes the request in the **exact** required format:
+((relation, stroke_id), (relation, stroke_id))
 
 ### Instruction:
 You are an expert in geometric reasoning and sketch analysis. Your task is to analyze the provided stroke cloud and determine the appropriate construction lines that should be added.
 
-### Stroke Cloud Data:
-{}
+### Input Format:
+- The input consists of **strokes**, where:
+  - `id`: A unique identifier for each stroke.
+  - `type`: `"line"` for straight strokes, `"curve"` for curved strokes.
+  - `coords`: **6 numerical values** representing **start and end points** in 3D space.
+- There is also a list of **intersections**, showing which strokes intersect.
+
+### Example Input:
+{
+    "strokes": [
+        {"id": 1, "type": "line", "coords": [0.0, 0.0, 0.0, 1.0, 0.0, 0.0]},
+        {"id": 2, "type": "curve", "coords": [1.0, 0.0, 0.0, 1.0, 1.0, 0.0]}
+    ],
+    "intersections": [[1, 2]]
+}
+
+### Guidelines for Construction Line Prediction:
+- **Midpoint Alignment**: Create lines connecting midpoints of intersecting strokes.
+- **Extension**: If a stroke extends towards another, add a construction line to guide alignment.
+- **Projection**: If a stroke belongs to a curve, project key points to guide sketching.
+- **Scaffolding**: Ensure perspective consistency by connecting endpoints to major intersections.
+
+### Expected Output Format:
+((relation, stroke_id), (relation, stroke_id))
 
 ### Response:
 <think>{}"""
 
-# ====== 🔹 Test Prompt Before Training ====== #
+ # ====== 🔹 Test Prompt Before Training ====== #
 # question = """{
 #     "strokes": [
 #         {"id": 1, "type": "feature_line", "geometry": [[0,0,0], [1,0,0]]},
