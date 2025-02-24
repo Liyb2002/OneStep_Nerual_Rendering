@@ -4,6 +4,14 @@ from datasets import load_dataset
 import wandb
 from unsloth import FastLanguageModel
 
+import torch
+torch.cuda.empty_cache()
+torch.cuda.ipc_collect()  # Forces GPU garbage collection
+
+import os
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
+
+
 # ====== 🔹 Hugging Face Authentication ====== #
 token_path = "creds/hf_token.txt"
 if os.path.exists(token_path):
@@ -57,15 +65,6 @@ You are an expert in geometric reasoning and sketch analysis. Your task is to an
   - `coords`: **6 numerical values** representing **start and end points** in 3D space.
 - There is also a list of **intersections**, showing which strokes intersect.
 
-### Example Input:
-{
-    "strokes": [
-        {"id": 1, "type": "line", "coords": [0.0, 0.0, 0.0, 1.0, 0.0, 0.0]},
-        {"id": 2, "type": "curve", "coords": [1.0, 0.0, 0.0, 1.0, 1.0, 0.0]}
-    ],
-    "intersections": [[1, 2]]
-}
-
 ### Guidelines for Construction Line Prediction:
 - **Midpoint Alignment**: Create lines connecting midpoints of intersecting strokes.
 - **Extension**: If a stroke extends towards another, add a construction line to guide alignment.
@@ -75,10 +74,14 @@ You are an expert in geometric reasoning and sketch analysis. Your task is to an
 ### Expected Output Format:
 ((relation, stroke_id), (relation, stroke_id))
 
+
+### Stroke Cloud Data:
+{}
+
 ### Response:
 <think>{}"""
 
- # ====== 🔹 Test Prompt Before Training ====== #
+# ====== 🔹 Test Prompt Before Training ====== #
 # question = """{
 #     "strokes": [
 #         {"id": 1, "type": "feature_line", "geometry": [[0,0,0], [1,0,0]]},
@@ -159,8 +162,8 @@ trainer = SFTTrainer(
     max_seq_length=max_seq_length,
     dataset_num_proc=2,
     args=TrainingArguments(
-        per_device_train_batch_size=2,
-        gradient_accumulation_steps=4,
+        per_device_train_batch_size=1,
+        gradient_accumulation_steps=8,
         warmup_steps=5,
         max_steps=60,
         learning_rate=2e-4,
