@@ -58,12 +58,6 @@ Write a response that appropriately completes the request in the **exact** requi
 ### Instruction:
 You are an expert in geometric reasoning and sketch analysis. Your task is to analyze the provided stroke cloud and determine the appropriate construction lines that should be added.
 
-### Input Format:
-- The input consists of **strokes**, where:
-  - `id`: A unique identifier for each stroke.
-  - `type`: `"line"` for straight strokes, `"curve"` for curved strokes.
-  - `coords`: **6 numerical values** representing **start and end points** in 3D space.
-- There is also a list of **intersections**, showing which strokes intersect.
 
 ### Guidelines for Construction Line Prediction:
 - **Midpoint Alignment**: Create lines connecting midpoints of intersecting strokes.
@@ -71,8 +65,22 @@ You are an expert in geometric reasoning and sketch analysis. Your task is to an
 - **Projection**: If a stroke belongs to a curve, project key points to guide sketching.
 - **Scaffolding**: Ensure perspective consistency by connecting endpoints to major intersections.
 
+### Input Format:
+- The input consists of **strokes**, where:
+  - `id`: A unique identifier for each stroke.
+  - `type`: `"line"` for straight strokes, `"curve"` for curved strokes.
+  - `coords`: **6 numerical values** representing **start and end points** in 3D space.
+- There is also a list of **intersections**, showing which strokes intersect.
+
+
+
 ### Expected Output Format:
 ((relation, stroke_id), (relation, stroke_id))
+
+The relations can have three types: 
+"midpoint": "The point is the midpoint of the stroke.",
+"on_extension": "The point lies on the extension of the stroke.",
+"endpoint": "The point is an endpoint of the stroke."
 
 
 ### Stroke Cloud Data:
@@ -128,6 +136,15 @@ dataset = dataset.map(formatting_prompts_func, batched=True)
 
 print("-------------SET UP LoRA Fine Tuning---------------------")
 
+
+num_samples = len(dataset)  # Total dataset size
+effective_batch_size = 2 * 8  # batch_size * gradient_accumulation_steps
+steps_per_epoch = num_samples // effective_batch_size
+max_steps = steps_per_epoch * 5  # Train for 5 epochs
+
+print(f"Dataset size: {num_samples}, Training for {max_steps} steps (5 epochs)")
+
+
 model = FastLanguageModel.get_peft_model(
     model,
     r=16,
@@ -162,10 +179,10 @@ trainer = SFTTrainer(
     max_seq_length=max_seq_length,
     dataset_num_proc=2,
     args=TrainingArguments(
-        per_device_train_batch_size=1,
+        per_device_train_batch_size=2,
         gradient_accumulation_steps=8,
         warmup_steps=5,
-        max_steps=60,
+        max_steps=max_steps,
         learning_rate=2e-4,
         fp16=not is_bfloat16_supported(),
         bf16=is_bfloat16_supported(),
