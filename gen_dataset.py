@@ -1,24 +1,5 @@
-import sys
-import torch
-import torch.optim as optim
-import torch.nn as nn
-from tqdm import tqdm
-from dataloader import cad2sketch_dataset_loader
-from torch.utils.data import DataLoader
-
-import helper
 import os
-
-import numpy as np
-
-import cad2sketch_stroke_features
-
-
 import json
-
-dataset = cad2sketch_dataset_loader()
-dataloader = DataLoader(dataset, batch_size=1, shuffle=True)
-
 
 data_path = os.path.join(os.getcwd(), 'annotated_input')  # Where input.json & gt_output.json are stored
 formatted_data_path = os.path.join(os.getcwd(), 'dataset', 'formatted_data')  # Where training_dataset.json is saved
@@ -41,19 +22,19 @@ def collect_formatted_data(data_path, formatted_data_path):
             with open(output_path, "r") as f:
                 output_json = json.load(f)
 
-            
+            # Append each pair separately
             formatted_data.append({
-                "input": f"Given the stroke cloud data:\n{json.dumps(input_json, indent=2)}, what are the construction line relations?",
-                "output": json.dumps(output_json, indent=2)
+                "input": json.dumps(input_json, separators=(',', ':')),  # Compact format
+                "output": json.dumps(output_json, separators=(',', ':'))
             })
 
     # Ensure the formatted_data_path exists
     os.makedirs(formatted_data_path, exist_ok=True)
 
-    # Save the final dataset
+    # Save all formatted data into a single JSON file
     dataset_path = os.path.join(formatted_data_path, "training_dataset.json")
     with open(dataset_path, "w") as f:
-        json.dump(formatted_data, f, indent=4)
+        json.dump(formatted_data, f, indent=4)  # Keeps readability
 
     print(f"Final formatted dataset saved at: {dataset_path}")
 

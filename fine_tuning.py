@@ -52,42 +52,45 @@ model, tokenizer = FastLanguageModel.from_pretrained(
 
 # ====== 🔹 Define Prompt Style for Fine-Tuning ====== #
 prompt_style = """Below is an instruction that describes a task, paired with an input that provides further context. 
-Write a response that appropriately completes the request in the **exact** required format:
-((relation, stroke_id), (relation, stroke_id))
+Write a response that follows the **exact** required format: [[relation, stroke_id], [relation, stroke_id]]. 
+Do not give any explanation
 
-### Instruction:
-You are an expert in geometric reasoning and sketch analysis. Your task is to analyze the provided stroke cloud and determine the appropriate construction lines that should be added.
+### **Instruction**:
+You are an expert in **geometric reasoning and sketch analysis**. Your task is to analyze the given **stroke cloud** and determine the appropriate **construction lines** that should be added based on stroke relationships.
 
+### **Guidelines for Construction Line Prediction**:
+- **Midpoint Alignment**: Create construction lines connecting the midpoints of intersecting strokes.
+- **Extension Alignment**: If a stroke naturally extends toward another, define a construction line guiding this alignment.
+- **Projection Alignment**: If a stroke belongs to a curve, project its key points to maintain geometric consistency.
+- **Scaffolding Support**: Ensure structural alignment by connecting stroke endpoints to key intersections.
 
-### Guidelines for Construction Line Prediction:
-- **Midpoint Alignment**: Create lines connecting midpoints of intersecting strokes.
-- **Extension**: If a stroke extends towards another, add a construction line to guide alignment.
-- **Projection**: If a stroke belongs to a curve, project key points to guide sketching.
-- **Scaffolding**: Ensure perspective consistency by connecting endpoints to major intersections.
+### **Input Format**:
+The input consists of:
+- **strokes**: A list of strokes where:
+  - `"id"`: A unique identifier for each stroke.
+  - `"type"`: `"line"` for straight strokes, `"curve"` for curved strokes.
+  - `"coords"`: A list of **six numerical values** representing the **start and end points** in 3D space.
+- **intersections**: A list indicating pairs of stroke IDs that intersect.
 
-### Input Format:
-- The input consists of **strokes**, where:
-  - `id`: A unique identifier for each stroke.
-  - `type`: `"line"` for straight strokes, `"curve"` for curved strokes.
-  - `coords`: **6 numerical values** representing **start and end points** in 3D space.
-- There is also a list of **intersections**, showing which strokes intersect.
+### **Expected Output Format**:
+[[relation, stroke_id], [relation, stroke_id]]
 
+### **Explanation of Output Format**:
+Each **construction line** is defined by **two points**, each associated with a stroke.
+Each one can be written as (relation, stroke_id), which is the current point's relation to a stroke in the given input.
+ **relation** can be:
+- `"midpoint"`: The point is the **midpoint** of the stroke.
+- `"on_extension"`: The point lies **on the extension** of the stroke.
+- `"endpoint"`: The point is an **endpoint** of the stroke.
 
+---
 
-### Expected Output Format:
-((relation, stroke_id), (relation, stroke_id))
-
-The relations can have three types: 
-"midpoint": "The point is the midpoint of the stroke.",
-"on_extension": "The point lies on the extension of the stroke.",
-"endpoint": "The point is an endpoint of the stroke."
-
-
-### Stroke Cloud Data:
+### **Stroke Cloud Data**:
 {}
 
-### Response:
-<think>{}"""
+### **Response**:
+{}
+"""
 
 # ====== 🔹 Test Prompt Before Training ====== #
 # question = """{
